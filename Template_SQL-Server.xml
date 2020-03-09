@@ -1,0 +1,1041 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2020-02-28T23:24:02Z</date>
+    <groups>
+        <group>
+            <name>Templates/Databases</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template - Windows LLD MSSQL</template>
+            <name>Template - Windows LLD MSSQL</name>
+            <description># Desenvolvido por Diego Cavalcante - 06/12/2017&#13;
+# Monitoramento Windows SQLServer</description>
+            <groups>
+                <group>
+                    <name>Templates/Databases</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>MSSQL -  Estatísticas</name>
+                </application>
+                <application>
+                    <name>MSSQL - General</name>
+                </application>
+                <application>
+                    <name>MSSQL - Jobs Status</name>
+                </application>
+                <application>
+                    <name>MSSQL - Memoria</name>
+                </application>
+                <application>
+                    <name>MSSQL - Servicios</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>Version</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>discovery.mssql.dados[VERSAO]</key>
+                    <delay>86400</delay>
+                    <history>15d</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Versão do SQLServer.</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - General</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Puerto</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>net.tcp.port[,{$MSSQLPORTA}]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <status>DISABLED</status>
+                    <description>Porta usada pelo MSSQL.</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - General</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>STATUS - Check Porta</name>
+                    </valuemap>
+                    <triggers>
+                        <trigger>
+                            <expression>{last(0)}=0</expression>
+                            <name>MSSQL Porta ({ITEM.LASTVALUE})</name>
+                            <status>DISABLED</status>
+                            <priority>WARNING</priority>
+                            <description>Porta MSSQL Fechada</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Processor Time (%)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\Process(sqlservr)\% Processor Time]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <description>perf_counter[\Process(sqlservr)\% Processor Time]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Memória em Uso</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\Process(sqlservr)\Private Bytes]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>B</units>
+                    <description>Memória Usada pelo SQL.&#13;
+perf_counter[\Process(sqlservr)\Private Bytes]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - Memoria</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Buffer Cache Hit Ratio (%)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Buffer cache hit ratio]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <description>perf_counter[\{$MSSQLINST}:Buffer Manager\Buffer cache hit ratio]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - Memoria</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Checkpoint Pages por (SEG)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Checkpoint pages/sec]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>p/sec</units>
+                    <description>perf_counter[\{$MSSQLINST}:Buffer Manager\Checkpoint pages/sec]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Database Pages</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Database pages]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <description>perf_counter[\SQLServer:Buffer Manager\Database pages]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Lazy Writes por (SEG)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Lazy writes/sec]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>p/sec</units>
+                    <description>perf_counter[\{$MSSQLINST}:Buffer Manager\Lazy writes/sec]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Page Life Expectancy</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Page life expectancy]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>s</units>
+                    <description>perf_counter[\{$MSSQLINST}:Buffer Manager\Page life expectancy]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Target Pages</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Target pages]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <description>perf_counter[\{$MSSQLINST}:Buffer Manager\Target pages]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Tamanho Total das Databases</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Databases(_Total)\Data File(s) Size (KB)]</key>
+                    <delay>3600</delay>
+                    <history>15d</history>
+                    <trends>90d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>B</units>
+                    <description>Tamanho Total dos Bancos de Dados.&#13;
+perf_counter[\{$MSSQLINST}:Databases(_Total)\Data File(s) Size (KB)]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>1024</params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>Tamanho Total dos Logs</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Databases(_Total)\Log File(s) Size (KB)]</key>
+                    <delay>3600</delay>
+                    <history>15d</history>
+                    <trends>90d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>B</units>
+                    <description>Tamanho Total dos Logs.&#13;
+perf_counter[\{$MSSQLINST}:Databases(_Total)\Log File(s) Size (KB)]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - General</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>1024</params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>Total de Conexões nas Databases</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:General Statistics\User Connections]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <description>Numero Total de Conexões nas Databases.&#13;
+perf_counter[\{$MSSQLINST}:General Statistics\User Connections]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Lock Waits por (SEG)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Locks(_Total)\Lock Waits/sec]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <units>p/sec</units>
+                    <description>perf_counter[\{$MSSQLINST}:Locks(_Total)\Lock Waits/sec]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Memória Grants Pending</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Memory Manager\Memory Grants Pending]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <description>perf_counter[\{$MSSQLINST}:Memory Manager\Memory Grants Pending]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - Memoria</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Memória em Cache</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Memory Manager\SQL Cache Memory (KB)]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>B</units>
+                    <description>Memória em Cache do SQL.&#13;
+perf_counter[\{$MSSQLINST}:Memory Manager\SQL Cache Memory (KB)]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - Memoria</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>1024</params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>Memória Reservada</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:Memory Manager\Target Server Memory (KB)]</key>
+                    <delay>3600</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <units>B</units>
+                    <description>perf_counter[\{$MSSQLINST}:Memory Manager\Target Server Memory (KB)]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - Memoria</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>1024</params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>Erros por (SEG)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:SQL Errors(_Total)\Errors/sec]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>p/sec</units>
+                    <description>perf_counter[\{$MSSQLINST}:SQL Errors(_Total)\Errors/sec]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SQL Compilations por (SEG)</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>perf_counter[\{$MSSQLINST}:SQL Statistics\SQL Compilations/sec]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>FLOAT</value_type>
+                    <units>p/sec</units>
+                    <description>perf_counter[\{$MSSQLINST}:SQL Statistics\SQL Compilations/sec]</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL -  Estatísticas</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SQL Server Agent {$MSSQLAGENT}</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[{$MSSQLAGENT}]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <description>Serviço: SQLSERVERAGENT&#13;
+Nome: SQL Server Agent ({$MSSQLAGENT})&#13;
+Descrição: Executa tarefas, monitora o SQL Server, dispara alertas e permite a automação de algumas tarefas administrativas.</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - Servicios</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>STATUS - Servicio</name>
+                    </valuemap>
+                    <triggers>
+                        <trigger>
+                            <expression>{count(#3,0,gt)}=3</expression>
+                            <name>SQL Server Agent {$MSSQLAGENT} ({ITEM.LASTVALUE})</name>
+                            <priority>WARNING</priority>
+                            <description>Serviço: SQLSERVERAGENT&#13;
+Nome: SQL Server Agent ({$MSSQLAGENT})&#13;
+Descrição: Executa tarefas, monitora o SQL Server, dispara alertas e permite a automação de algumas tarefas administrativas.</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>SQL Server {$MSSQLSERVER}</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>service.info[{$MSSQLSERVER}]</key>
+                    <delay>300</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <description>Serviço: MSSQLSERVER&#13;
+Nome: SQL Server ({$MSSQLSERVER})&#13;
+Descrição: Oferece armazenamento, processamento e acesso controlado de dados e processamento rápido de transações.</description>
+                    <applications>
+                        <application>
+                            <name>MSSQL - Servicios</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>STATUS - Servicio</name>
+                    </valuemap>
+                    <triggers>
+                        <trigger>
+                            <expression>{count(#3,0,gt)}=3</expression>
+                            <name>SQL Server {$MSSQLSERVER} ({ITEM.LASTVALUE})</name>
+                            <priority>WARNING</priority>
+                            <description>Serviço: MSSQLSERVER&#13;
+Nome: SQL Server ({$MSSQLSERVER})&#13;
+Descrição: Oferece armazenamento, processamento e acesso controlado de dados e processamento rápido de transações.</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Discover - MSSQL Databases</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>discovery.mssql.databases</key>
+                    <delay>3600</delay>
+                    <lifetime>1d</lifetime>
+                    <description>Descoberta de Bancos de Dados MSSQL Server</description>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>{#MSSQLDBNAME} Blocked</name>
+                            <key>discovery.mssql.dados[BLOCKED,{#MSSQLDBNAME}]</key>
+                            <delay>2m</delay>
+                            <history>30d</history>
+                            <trends>90d</trends>
+                            <description>Ver el numero de procesos bloqueados en {#MSSQLDBNAME}</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>★ MSSQL ★ Database Info - {#MSSQLDBNAME}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <valuemap>
+                                <name>STATUS - Blocked</name>
+                            </valuemap>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last(0)}&gt;0</expression>
+                                    <name>{#MSSQLDBNAME} Blocked ({ITEM.LASTVALUE})</name>
+                                    <priority>HIGH</priority>
+                                    <description>SQLServer&#13;
+Blocked of Database {#MSSQLDBNAME} - {ITEM.LASTVALUE}</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#MSSQLDBNAME} Número de Conexiones</name>
+                            <key>discovery.mssql.dados[CONN,{#MSSQLDBNAME}]</key>
+                            <delay>600</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <units>Conexiones</units>
+                            <description>Numero de Conexões na Database MSSQL - {#MSSQLDBNAME}</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>★ MSSQL ★ Database Info - {#MSSQLDBNAME}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#MSSQLDBNAME} Status</name>
+                            <key>discovery.mssql.dados[STATUS,{#MSSQLDBNAME}]</key>
+                            <delay>600</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <description>Monitora o Status da Database MSSQL - {#MSSQLDBNAME}</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>★ MSSQL ★ Database Info - {#MSSQLDBNAME}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <valuemap>
+                                <name>STATUS - MSSQL Databases</name>
+                            </valuemap>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last(0)}&gt;0</expression>
+                                    <name>{#MSSQLDBNAME} Status ({ITEM.LASTVALUE})</name>
+                                    <priority>HIGH</priority>
+                                    <description>SQLServer&#13;
+Status da Database {#MSSQLDBNAME} é {ITEM.LASTVALUE}&#13;
+&#13;
+Status Possíveis:&#13;
+0 ⇒ ONLINE&#13;
+1 ⇒ RESTAURAÇÃO&#13;
+2 ⇒ RECUPERANDO&#13;
+3 ⇒ RECUPERAÇÃO PENDENTE&#13;
+4 ⇒ SUSPEITO&#13;
+5 ⇒ EMERGÊNCIA&#13;
+6 ⇒ OFFLINE&#13;
+7 ⇒ NÃO EXISTE</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#MSSQLDBNAME} Size of Database</name>
+                            <key>perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Data File(s) Size (KB)]</key>
+                            <delay>3600</delay>
+                            <history>15d</history>
+                            <trends>90d</trends>
+                            <units>B</units>
+                            <description>Detecta o Tamanho Total do Banco.&#13;
+perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Data File(s) Size (KB)]</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>★ MSSQL ★ Database Info - {#MSSQLDBNAME}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>1024</params>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>{#MSSQLDBNAME} Tamaño de Log</name>
+                            <key>perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Log File(s) Size (KB)]</key>
+                            <delay>3600</delay>
+                            <history>15d</history>
+                            <trends>90d</trends>
+                            <units>B</units>
+                            <description>Tamanho Total do Arquivo de Log.&#13;
+perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Log File(s) Size (KB)]</description>
+                            <application_prototypes>
+                                <application_prototype>
+                                    <name>★ MSSQL ★ Database Info - {#MSSQLDBNAME}</name>
+                                </application_prototype>
+                            </application_prototypes>
+                            <preprocessing>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>1024</params>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>MSSQL -  Número de Conexiones en {#MSSQLDBNAME}</name>
+                            <show_work_period>NO</show_work_period>
+                            <graph_items>
+                                <graph_item>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>0099CC</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Template - Windows LLD MSSQL</host>
+                                        <key>discovery.mssql.dados[CONN,{#MSSQLDBNAME}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>MSSQL -Size Total of Databases and Logs {#MSSQLDBNAME}</name>
+                            <show_work_period>NO</show_work_period>
+                            <graph_items>
+                                <graph_item>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>00C800</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Template - Windows LLD MSSQL</host>
+                                        <key>perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Data File(s) Size (KB)]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>0099CC</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Template - Windows LLD MSSQL</host>
+                                        <key>perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Log File(s) Size (KB)]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <name>MSSQL - Status in {#MSSQLDBNAME}</name>
+                            <show_work_period>NO</show_work_period>
+                            <graph_items>
+                                <graph_item>
+                                    <drawtype>GRADIENT_LINE</drawtype>
+                                    <color>0099CC</color>
+                                    <yaxisside>RIGHT</yaxisside>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Template - Windows LLD MSSQL</host>
+                                        <key>discovery.mssql.dados[STATUS,{#MSSQLDBNAME}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <name>Discover - MSSQL Jobs</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>discovery.mssql.jobs</key>
+                    <delay>3600</delay>
+                    <lifetime>1d</lifetime>
+                    <description>Descoberta de Jobs do MSSQL Server</description>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Job {#MSSQLJOBNAME} Status</name>
+                            <type>ZABBIX_ACTIVE</type>
+                            <key>discovery.mssql.dados[JOBSTATUS,{#MSSQLJOBNAME}]</key>
+                            <delay>3600</delay>
+                            <history>15d</history>
+                            <trends>30d</trends>
+                            <description>Monitora Status dos Jobs SQLSERVER.</description>
+                            <applications>
+                                <application>
+                                    <name>MSSQL - Jobs Status</name>
+                                </application>
+                            </applications>
+                            <valuemap>
+                                <name>STATUS - MSSQL Jobs</name>
+                            </valuemap>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{last(0)}=0</expression>
+                                    <name>Job {#MSSQLJOBNAME} ({ITEM.LASTVALUE})</name>
+                                    <priority>HIGH</priority>
+                                    <description>SQLServer&#13;
+Status do Job {#MSSQLJOBNAME} é {ITEM.LASTVALUE}&#13;
+&#13;
+Status Possíveis:&#13;
+0 = Falha&#13;
+1 = Sucesso&#13;
+2 = Repetir&#13;
+3 = Cancelado&#13;
+4 = Em Progresso&#13;
+5 = Nunca Executado</description>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{last(0)}=2</expression>
+                                    <name>Job {#MSSQLJOBNAME} ({ITEM.LASTVALUE})</name>
+                                    <priority>INFO</priority>
+                                    <description>SQLServer&#13;
+Status do Job {#MSSQLJOBNAME} é {ITEM.LASTVALUE}&#13;
+&#13;
+Status Possíveis:&#13;
+0 = Falha&#13;
+1 = Sucesso&#13;
+2 = Repetir&#13;
+3 = Cancelado&#13;
+4 = Em Progresso&#13;
+5 = Nunca Executado</description>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{last(0)}=3</expression>
+                                    <name>Job {#MSSQLJOBNAME} ({ITEM.LASTVALUE})</name>
+                                    <priority>WARNING</priority>
+                                    <description>SQLServer&#13;
+Status do Job {#MSSQLJOBNAME} é {ITEM.LASTVALUE}&#13;
+&#13;
+Status Possíveis:&#13;
+0 = Falha&#13;
+1 = Sucesso&#13;
+2 = Repetir&#13;
+3 = Cancelado&#13;
+4 = Em Progresso&#13;
+5 = Nunca Executado</description>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{last(0)}=5</expression>
+                                    <name>Job {#MSSQLJOBNAME} ({ITEM.LASTVALUE})</name>
+                                    <priority>AVERAGE</priority>
+                                    <description>SQLServer&#13;
+Status do Job {#MSSQLJOBNAME} é {ITEM.LASTVALUE}&#13;
+&#13;
+Status Possíveis:&#13;
+0 = Falha&#13;
+1 = Sucesso&#13;
+2 = Repetir&#13;
+3 = Cancelado&#13;
+4 = Em Progresso&#13;
+5 = Nunca Executado</description>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+    <graphs>
+        <graph>
+            <name>MSSQL - Size Total of Databases and Logs</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>5A2B57</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Databases(_Total)\Data File(s) Size (KB)]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>89ABF8</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Databases(_Total)\Log File(s) Size (KB)]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>MSSQL - Statistics</name>
+            <graph_items>
+                <graph_item>
+                    <color>6C59DC</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Checkpoint pages/sec]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>AC8C14</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Database pages]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>611F27</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:SQL Errors(_Total)\Errors/sec]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>3</sortorder>
+                    <color>F230E0</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Lazy writes/sec]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>4</sortorder>
+                    <color>5CCD18</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Locks(_Total)\Lock Waits/sec]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>5</sortorder>
+                    <color>BB2A02</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Page life expectancy]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>6</sortorder>
+                    <color>5A2B57</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\Process(sqlservr)\% Processor Time]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>7</sortorder>
+                    <color>89ABF8</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:SQL Statistics\SQL Compilations/sec]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>8</sortorder>
+                    <color>7EC25C</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Target pages]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>9</sortorder>
+                    <color>274482</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:General Statistics\User Connections]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>MSSQL - Uso de Memoria</name>
+            <graph_items>
+                <graph_item>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>FC6EA3</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\Process(sqlservr)\Private Bytes]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>A54F10</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Memory Manager\SQL Cache Memory (KB)]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>2774A4</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Buffer Manager\Buffer cache hit ratio]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>3</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>6C59DC</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Memory Manager\Memory Grants Pending]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>4</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>AC8C14</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Template - Windows LLD MSSQL</host>
+                        <key>perf_counter[\{$MSSQLINST}:Memory Manager\Target Server Memory (KB)]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+    <value_maps>
+        <value_map>
+            <name>STATUS - Blocked</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Not Blocked</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Blocked</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>STATUS - Check Porta</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Inacessível</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Aberta</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>STATUS - MSSQL Databases</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>ONLINE</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>RESTAURAÇÃO</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>RECUPERANDO</newvalue>
+                </mapping>
+                <mapping>
+                    <value>3</value>
+                    <newvalue>RECUPERAÇÃO PENDENTE</newvalue>
+                </mapping>
+                <mapping>
+                    <value>4</value>
+                    <newvalue>SUSPEITO</newvalue>
+                </mapping>
+                <mapping>
+                    <value>5</value>
+                    <newvalue>EMERGÊNCIA</newvalue>
+                </mapping>
+                <mapping>
+                    <value>6</value>
+                    <newvalue>OFFLINE</newvalue>
+                </mapping>
+                <mapping>
+                    <value>7</value>
+                    <newvalue>NÃO EXISTE</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>STATUS - MSSQL Jobs</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Falha</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Sucesso</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>Repetir</newvalue>
+                </mapping>
+                <mapping>
+                    <value>3</value>
+                    <newvalue>Cancelado</newvalue>
+                </mapping>
+                <mapping>
+                    <value>4</value>
+                    <newvalue>Em Progresso</newvalue>
+                </mapping>
+                <mapping>
+                    <value>5</value>
+                    <newvalue>Nunca Executado</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>STATUS - Servicio</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Iniciado</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Pausado</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>Iniciar Pendente</newvalue>
+                </mapping>
+                <mapping>
+                    <value>3</value>
+                    <newvalue>Pausa Pendente</newvalue>
+                </mapping>
+                <mapping>
+                    <value>4</value>
+                    <newvalue>Continuar Pendente</newvalue>
+                </mapping>
+                <mapping>
+                    <value>5</value>
+                    <newvalue>Parar Pendente</newvalue>
+                </mapping>
+                <mapping>
+                    <value>6</value>
+                    <newvalue>Parado</newvalue>
+                </mapping>
+                <mapping>
+                    <value>7</value>
+                    <newvalue>Desconhecido</newvalue>
+                </mapping>
+                <mapping>
+                    <value>255</value>
+                    <newvalue>Desconhecido</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+    </value_maps>
+</zabbix_export>
